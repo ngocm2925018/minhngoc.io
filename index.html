@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Trang web cá nhân của MINH NGỌC" />
+  <title>MINH NGỌC — Personal Website</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    /* Subtle animated gradient */
+    :root { color-scheme: light; }
+    html.dark { color-scheme: dark; }
+
+    .bg-aurora {
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(59,130,246,.18), transparent 55%),
+                  radial-gradient(900px 500px at 90% 20%, rgba(236,72,153,.18), transparent 55%),
+                  radial-gradient(900px 600px at 30% 90%, rgba(16,185,129,.16), transparent 55%),
+                  linear-gradient(to bottom, rgba(255,255,255,1), rgba(248,250,252,1));
+    }
+    html.dark .bg-aurora {
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(59,130,246,.22), transparent 55%),
+                  radial-gradient(900px 500px at 90% 20%, rgba(236,72,153,.20), transparent 55%),
+                  radial-gradient(900px 600px at 30% 90%, rgba(16,185,129,.18), transparent 55%),
+                  linear-gradient(to bottom, rgba(2,6,23,1), rgba(3,7,18,1));
+    }
+
+    /* Reveal animation */
+    .reveal { opacity: 0; transform: translateY(14px); }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); transition: opacity .7s ease, transform .7s ease; }
+
+    /* Fancy focus */
+    .focus-ring:focus { outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,.35); }
+
+    /* Toast */
+    .toast { transform: translateY(16px); opacity: 0; pointer-events: none; }
+    .toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; transition: all .25s ease; }
+
+    /* Hide scrollbar on chips container */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="min-h-screen bg-aurora text-slate-800 dark:text-slate-100">
+  <!-- Top progress bar -->
+  <div id="progress" class="fixed left-0 top-0 h-1 w-0 bg-gradient-to-r from-blue-500 via-fuchsia-500 to-emerald-400 z-50"></div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 backdrop-blur border-b border-slate-200/60 dark:border-white/10 bg-white/60 dark:bg-slate-950/50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="h-16 flex items-center justify-between gap-3">
+        <a href="#home" class="flex items-center gap-2 font-semibold tracking-tight">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900">MN</span>
+          <span class="hidden sm:block">MINH NGỌC</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-1 text-sm">
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-900/5 dark:hover:bg-white/10" href="#about">Giới thiệu</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-900/5 dark:hover:bg-white/10" href="#skills">Kỹ năng</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-900/5 dark:hover:bg-white/10" href="#projects">Dự án</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-900/5 dark:hover:bg-white/10" href="#timeline">Hành trình</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-900/5 dark:hover:bg-white/10" href="#contact">Liên hệ</a>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <button id="themeBtn" class="focus-ring inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/40 hover:bg-white dark:hover:bg-slate-900" type="button" aria-label="Chuyển chế độ sáng/tối">
+            <span id="themeIcon" class="text-base" aria-hidden="true">◐</span>
+            <span class="hidden sm:inline text-sm">Giao diện</span>
+          </button>
+          <button id="mobileBtn" class="md:hidden focus-ring inline-flex items-center justify-center h-10 w-10 rounded-lg border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/40" aria-label="Mở menu" type="button">
+            <span class="text-lg" aria-hidden="true">☰</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile nav -->
+      <div id="mobileNav" class="md:hidden hidden pb-4">
+        <div class="grid gap-2 text-sm">
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-900/5 dark:hover:bg-white/10" href="#about">Giới thiệu</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-900/5 dark:hover:bg-white/10" href="#skills">Kỹ năng</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-900/5 dark:hover:bg-white/10" href="#projects">Dự án</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-900/5 dark:hover:bg-white/10" href="#timeline">Hành trình</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-900/5 dark:hover:bg-white/10" href="#contact">Liên hệ</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main id="home">
+    <!-- Hero -->
+    <section class="pt-12 sm:pt-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="grid lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-7 reveal">
+            <p class="inline-flex items-center gap-2 text-xs font-medium tracking-wide uppercase px-3 py-1 rounded-full border border-slate-200/70 dark:border-white/10 bg-white/50 dark:bg-slate-900/30">
+              <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+              Sẵn sàng cho cơ hội mới
+            </p>
+            <h1 class="mt-4 text-4xl sm:text-5xl font-semibold tracking-tight leading-tight">
+              Xin chào, mình là <span class="bg-gradient-to-r from-blue-600 via-fuchsia-600 to-emerald-500 bg-clip-text text-transparent">MINH NGỌC</span>.
+              <span class="block text-slate-700 dark:text-slate-200">Thiết kế trải nghiệm số tinh gọn & hiện đại.</span>
+            </h1>
+            <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl">
+              Mình tập trung vào UI/UX, xây dựng website và sản phẩm số với ưu tiên: rõ ràng, tốc độ và cảm xúc.
+              Trang này là nơi tổng hợp dự án, kỹ năng và thông tin liên hệ.
+            </p>
+
+            <div class="mt-6 flex flex-wrap gap-3">
+              <a href="#projects" class="focus-ring inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100">
+                Xem dự án
+              </a>
+              <a href="#contact" class="focus-ring inline-flex items-center justify-center px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-900">
+                Liên hệ
+              </a>
+              <button id="copyEmailBtn" class="focus-ring inline-flex items-center justify-center px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-900" type="button">
+                Copy email
+              </button>
+            </div>
+
+            <div class="mt-8 grid sm:grid-cols-3 gap-3">
+              <div class="p-4 rounded-2xl border border-slate-200/70 dark:border-white/10 bg-white/50 dark:bg-slate-900/25">
+                <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Tập trung</p>
+                <p class="mt-1 font-semibold">UI/UX • Web</p>
+              </div>
+              <div class="p-4 rounded-2xl border border-slate-200/70 dark:border-white/10 bg-white/50 dark:bg-slate-900/25">
+                <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Giá trị</p>
+                <p class="mt-1 font-semibold">Tối giản • Hiệu quả</p>
+              </div>
+              <div class="p-4 rounded-2xl border border-slate-200/70 dark:border-white/10 bg-white/50 dark:bg-slate-900/25">
+                <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Tốc độ</p>
+                <p class="mt-1 font-semibold">Nhanh • Mượt</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 reveal">
+            <div class="relative p-6 sm:p-8 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-white/60 dark:bg-slate-900/30 overflow-hidden">
+              <div class="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-blue-500/15 blur-2xl"></div>
+              <div class="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-fuchsia-500/15 blur-2xl"></div>
+
+              <div class="flex items-start gap-4">
+                <div class="h-14 w-14 rounded-2xl bg-gradient-to-br from-blue-600 via-fuchsia-600 to-emerald-500"></div>
+                <div>
+                  <p class="font-semibold text-xl">MINH NGỌC</p>
+                  <p class="text-slate-600 dark:text-slate-300">Designer • Front-end</p>
+                </div>
+              </div>
+
+              <div class="mt-6 grid gap-3">
+                <div class="flex items-center justify-between gap-3 text-sm">
+                  <span class="text-slate-600 dark:text-slate-300">Email</span>
+                  <a class="font-medium hover:underline" href="mailto:minhngoc@example.com">minhngoc@example.com</a>
+                </div>
+                <div class="flex items-center justify-between gap-3 text-sm">
+                  <span class="text-slate-600 dark:text-slate-300">Địa điểm</span>
+                  <span class="font-medium">Việt Nam</span>
+                </div>
+                <div class="flex items-center justify-between gap-3 text-sm">
+                  <span class="text-slate-600 dark:text-slate-300">Trạng thái</span>
+                  <span class="inline-flex items-center gap-2 font-medium"><span class="h-2 w-2 rounded-full bg-emerald-500"></span>Đang nhận dự án</span>
+                </div>
+              </div>
+
+              <div class="mt-7">
+                <p class="text-sm font-semibold">Highlights</p>
+                <ul class="mt-2 grid gap-2 text-sm text-slate-600 dark:text-slate-300">
+                  <li class="flex gap-2"><span class="mt-1 h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500"></span>Thiết kế wireframe → UI → prototype</li>
+                  <li class="flex gap-2"><span class="mt-1 h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500"></span>Xây landing page tối ưu chuyển đổi</li>
+                  <li class="flex gap-2"><span class="mt-1 h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500"></span>Clean code, responsive, performance</li>
+                </ul>
+              </div>
+
+              <div class="mt-7 flex flex-wrap gap-2">
+                <span class="text-xs px-2.5 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 border border-slate-200/60 dark:border-white/10">Figma</span>
+                <span class="text-xs px-2.5 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 border border-slate-200/60 dark:border-white/10">Tailwind</span>
+                <span class="text-xs px-2.5 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 border border-slate-200/60 dark:border-white/10">JavaScript</span>
+                <span class="text-xs px-2.5 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 border border-slate-200/60 dark:border-white/10">Accessibility</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="pt-14 sm:pt-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="reveal">
+          <div class="flex items-end justify-between gap-4">
+            <div>
+              <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">Giới thiệu</h2>
+              <p class="mt-2 text-slate-600 dark:text-slate-300 max-w-2xl">Một vài thông tin nhanh để bạn hiểu mình làm gì và làm như thế nào.</p>
+            </div>
+            <a class="hidden sm:inline-flex focus-ring items-center gap-2 text-sm px-3 py-2 rounded-lg border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-900" href="#contact">Kết nối →</a>
+          </div>
+
+          <div class="mt-8 grid lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-7 p-6 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-white/55 dark:bg-slate-900/25">
+              <h3 class="font-semibold text-lg">Câu chuyện ngắn</h3>
+              <p class="mt-3 text-slate-600 dark:text-slate-300 leading-relaxed">
+                Mình yêu thích việc biến ý tưởng thành giao diện trực quan và trải nghiệm mượt mà.
+                Quy trình thường bắt đầu từ việc làm rõ mục tiêu, dựng cấu trúc (IA/Wireframe), thiết kế UI,
+                sau đó triển khai front-end để sản phẩm chạy tốt trên mọi thiết bị.
+              </p>
+              <p class="mt-3 text-slate-600 dark:text-slate-300 leading-relaxed">
+                Mình ưu tiên: thiết kế nhất quán, hệ thống hoá component, tối ưu hiệu năng và khả năng truy cập.
+              </p>
+
+              <div class="mt-6 grid sm:grid-cols-3 gap-3">
+                <div class="p-4 rounded-2xl bg-slate-900/5 dark:bg-white/10 border border-slate-200/60 dark:border-white/10">
+                  <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Phong cách</p>
+                  <p class="mt-1 font-semibold">Tối giản</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-900/5 dark:bg-white/10 border border-slate-200/60 dark:border-white/10">
+                  <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Ưu tiên</p>
+                  <p class="mt-1 font-semibold">Trải nghiệm</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-900/5 dark:bg-white/10 border border-slate-200/60 dark:border-white/10">
+                  <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Thế mạnh</p>
+                  <p class="mt-1 font-semibold">Hệ thống UI</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 grid gap-6">
+              <div class="p-6 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-white/55 dark:bg-slate-900/25">
+                <h3 class="font-semibold text-lg">Dịch vụ</h3>
+                <ul class="mt-3 grid gap-3 text-slate-600 dark:text-slate-300">
+                  <li class="flex gap-3"><span class="mt-1.5 h-2 w-2 rounded-full bg-blue-500"></span>Thiết kế Landing Page / Portfolio</li>
+                  <li class="flex gap-3"><span class="mt-1.5 h-2 w-2 rounded-full bg-fuchsia-500"></span>UI Kit, Design System cơ bản</li>
+                  <li class="flex gap-3"><span class="mt-1.5 h-2 w-2 rounded-full bg-emerald-500"></span>Front-end (HTML/CSS/JS, Tailwind)</li>
+                </ul>
+              </div>
+
+              <div class="p-6 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-white/55 dark:bg-slate-900/25">
+                <h3 class="font-semibold text-lg">Thông tin nhanh</h3>
+                <dl class="mt-3 grid gap-3 text-sm">
+                  <div class="flex items-center justify-between gap-4">
+                    <dt class="text-slate-600 dark:text-slate-300">Ngôn ngữ</dt>
+                    <dd class="font-medium">Việt / Anh</dd>
+                  </div>
+                  <div class="flex items-center justify-between gap-4">
+                    <dt class="text-slate-600 dark:text-slate-300">Công cụ</dt>
+                    <dd class="font-medium">Figma, VS Code</dd>
+                  </div>
+                  <div class="flex items-center justify-between gap-4">
+                    <dt class="text-slate-600 dark:text-slate-300">Sở thích</dt>
+                    <dd class="font-medium">Typography, Motion</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="pt-14 sm:pt-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="reveal">
+          <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">Kỹ năng</h2>
+          <p class="mt-2 text-slate-600 dark:text-slate-300 max-w-2xl">Một số kỹ năng và mức độ tự tin (tự đánh giá) để bạn tham khảo.</p>
+
+          <div class="mt-8 grid lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-7 p-6 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-white/55 dark:bg-slate-900/25">
+              <div class="grid gap-5" id="skillBars"></div>
+            </div>
+
+            <div class="lg:col-span-5 p-6 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-white/55 dark:bg-slate-900/25">
+              <h3 class="font-semibold text-lg">Workflow</h3>
+              <ol class="mt-3 grid gap-3 text-slate-600 dark:text-slate-300">
+                <li class="flex gap-3"><span class="mt-0.5 text-slate-400">01</span><span>Nắm mục tiêu, người dùng, ràng buộc</span></li>
+                <li class="flex gap-3"><span class="mt-0.5 text-slate-400">02</span><span>Wireframe, cấu trúc nội dung</span></li>
+                <li class="flex gap-3"><span class="mt-0.5 text-slate-400">03</span><span>UI + component system</span></li>
+                <li class="flex gap-3"><span class="mt-0.5 text-slate-400">04</span><span>Build + tối ưu (responsive, performance)</span></li>
+              </ol>
+
+              <div class="mt-6">
+                <h4 class="font-semibold">Tech stack thường dùng</h4>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  <span class="text-xs px-2.5 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 border border-slate-200/60 dark:border-white/10">HTML</span>
+                  <span class="text-xs px-2.5 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 border border-slate-200/60 dark:border-white/10">CSS</span>
+                  <span class="text-xs px-2.5 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 border border-slate-200/60 dark:border-white/10">JavaScript</span>
+                  <span class="text-xs px-2.5 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 border border-slate-200/60 dark:border-white/10">Tailwind</span>
+                  <span class="text-xs px-2.5 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 border border-slate-200/60 dark:border-white/10">Figma</span>
+                  <span class="text-xs px-2.5 py-1 rounded-full bg-slate-900/5 dark:bg-white/10 border border-slate-200/60 dark:border-white/10">Git</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="pt-14 sm:pt-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="reveal">
+          <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div>
+              <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">Dự án nổi bật</h2>
+              <p class="mt-2 text-slate-600 dark:text-slate-300 max-w-2xl">Một vài dự án mẫu (bạn có thể thay nội dung/đường dẫn sau).</p>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-slate-600 dark:text-slate-300">Lọc:</span>
+              <div class="flex gap-2 overflow-auto no-scrollbar max-w-full">
+                <button data-filter="all" class="filterBtn focus-ring text-sm px-3 py-2 rounded-lg border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-900">Tất cả</button>
+                <button data-filter="uiux" class="filterBtn focus-ring text-sm px-3 py-2 rounded-lg border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-900">UI/UX</button>
+                <button data-filter="web" class="filterBtn focus-ring text-sm px-3 py-2 rounded-lg border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-900">Web</button>
+                <button data-filter="brand" class="filterBtn focus-ring text-sm px-3 py-2 rounded-lg border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-900">Brand</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="projectGrid" class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section id="timeline" class="pt-14 sm:pt-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="reveal">
+          <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">Hành trình</h2>
+          <p class="mt-2 text-slate-600 dark:text-slate-300 max-w-2xl">Tóm tắt theo dòng thời gian (mang tính minh hoạ).</p>
+
+          <div class="mt-8 grid lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-7 p-6 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-white/55 dark:bg-slate-900/25">
+              <div class="grid gap-5">
+                <div class="flex gap-4">
+                  <div class="mt-1.5 h-3 w-3 rounded-full bg-blue-500"></div>
+                  <div>
+                    <p class="font-semibold">2025 — Freelance UI/UX & Web</p>
+                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">Thiết kế và triển khai landing page, tối ưu chuyển đổi, chuẩn hoá component.</p>
+                  </div>
+                </div>
+                <div class="flex gap-4">
+                  <div class="mt-1.5 h-3 w-3 rounded-full bg-fuchsia-500"></div>
+                  <div>
+                    <p class="font-semibold">2024 — Xây dựng Portfolio & Case Study</p>
+                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">Đào sâu UX, viết case study, cải thiện typography và motion.</p>
+                  </div>
+                </div>
+                <div class="flex gap-4">
+                  <div class="mt-1.5 h-3 w-3 rounded-full bg-emerald-500"></div>
+                  <div>
+                    <p class="font-semibold">2023 — Nền tảng Front-end</p>
+                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">Thực hành responsive, semantic HTML, JavaScript và tối ưu hiệu năng.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 p-6 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-white/55 dark:bg-slate-900/25">
+              <h3 class="font-semibold text-lg">Nguyên tắc làm việc</h3>
+              <ul class="mt-3 grid gap-3 text-slate-600 dark:text-slate-300">
+                <li class="flex gap-3"><span class="mt-1.5 h-2 w-2 rounded-full bg-slate-400 dark:bg-slate-500"></span>Rõ ràng mục tiêu & phạm vi</li>
+                <li class="flex gap-3"><span class="mt-1.5 h-2 w-2 rounded-full bg-slate-400 dark:bg-slate-500"></span>Giao tiếp đều, cập nhật tiến độ</li>
+                <li class="flex gap-3"><span class="mt-1.5 h-2 w-2 rounded-full bg-slate-400 dark:bg-slate-500"></span>Thiết kế có hệ thống, dễ mở rộng</li>
+                <li class="flex gap-3"><span class="mt-1.5 h-2 w-2 rounded-full bg-slate-400 dark:bg-slate-500"></span>Ưu tiên performance & accessibility</li>
+              </ul>
+
+              <div class="mt-6 p-4 rounded-2xl bg-gradient-to-br from-blue-500/10 via-fuchsia-500/10 to-emerald-500/10 border border-slate-200/60 dark:border-white/10">
+                <p class="text-sm font-semibold">Tip</p>
+                <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">Bạn chỉ cần thay nội dung dự án, email, link mạng xã hội là có portfolio hoàn chỉnh.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="pt-14 sm:pt-20 pb-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="reveal">
+          <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">Liên hệ</h2>
+          <p class="mt-2 text-slate-600 dark:text-slate-300 max-w-2xl">Gửi tin nhắn nhanh. Form này sẽ mô phỏng gửi (không cần server) và tạo email draft.</p>
+
+          <div class="mt-8 grid lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-5 p-6 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-white/55 dark:bg-slate-900/25">
+              <h3 class="font-semibold text-lg">Thông tin</h3>
+              <div class="mt-3 grid gap-3 text-sm">
+                <div class="flex items-center justify-between gap-4">
+                  <span class="text-slate-600 dark:text-slate-300">Email</span>
+                  <span class="font-medium" id="emailText">minhngoc@example.com</span>
+                </div>
+                <div class="flex items-center justify-between gap-4">
+                  <span class="text-slate-600 dark:text-slate-300">Phản hồi</span>
+                  <span class="font-medium">Trong 24–48h</span>
+                </div>
+              </div>
+
+              <div class="mt-6">
+                <h4 class="font-semibold">Mạng xã hội</h4>
+                <div class="mt-3 grid gap-2">
+                  <a class="focus-ring inline-flex items-center justify-between px-4 py-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-900" href="#" aria-label="Mở liên kết Behance (điền sau)">
+                    <span>Behance</span>
+                    <span class="text-slate-500 dark:text-slate-400">/minhngoc</span>
+                  </a>
+                  <a class="focus-ring inline-flex items-center justify-between px-4 py-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-900" href="#" aria-label="Mở liên kết GitHub (điền sau)">
+                    <span>GitHub</span>
+                    <span class="text-slate-500 dark:text-slate-400">@minhngoc</span>
+                  </a>
+                  <a class="focus-ring inline-flex items-center justify-between px-4 py-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-900" href="#" aria-label="Mở liên kết LinkedIn (điền sau)">
+                    <span>LinkedIn</span>
+                    <span class="text-slate-500 dark:text-slate-400">Minh Ngọc</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:col-span-7 p-6 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-white/55 dark:bg-slate-900/25">
+              <form id="contactForm" class="grid gap-4" novalidate>
+                <div class="grid sm:grid-cols-2 gap-4">
+                  <label class="grid gap-1">
+                    <span class="text-sm font-medium">Tên</span>
+                    <input id="name" class="focus-ring px-4 py-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-950/30" placeholder="Ví dụ: An" required />
+                    <span class="text-xs text-rose-600 hidden" data-err="name">Vui lòng nhập tên.</span>
+                  </label>
+                  <label class="grid gap-1">
+                    <span class="text-sm font-medium">Email</span>
+                    <input id="email" type="email" class="focus-ring px-4 py-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-950/30" placeholder="you@email.com" required />
+                    <span class="text-xs text-rose-600 hidden" data-err="email">Email chưa đúng định dạng.</span>
+                  </label>
+                </div>
+
+                <label class="grid gap-1">
+                  <span class="text-sm font-medium">Chủ đề</span>
+                  <input id="subject" class="focus-ring px-4 py-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-950/30" placeholder="Bạn cần mình hỗ trợ gì?" required />
+                  <span class="text-xs text-rose-600 hidden" data-err="subject">Vui lòng nhập chủ đề.</span>
+                </label>
+
+                <label class="grid gap-1">
+                  <span class="text-sm font-medium">Nội dung</span>
+                  <textarea id="message" rows="5" class="focus-ring px-4 py-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-950/30" placeholder="Mô tả ngắn yêu cầu, deadline, ngân sách (nếu có)…" required></textarea>
+                  <span class="text-xs text-rose-600 hidden" data-err="message">Vui lòng nhập nội dung.</span>
+                </label>
+
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Nhấn “Gửi” sẽ mở email draft tới Minh Ngọc và hiển thị thông báo thành công.</p>
+                  <div class="flex gap-2">
+                    <button class="focus-ring px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-900" type="reset">Xoá</button>
+                    <button id="sendBtn" class="focus-ring px-4 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100" type="submit">Gửi</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200/60 dark:border-white/10 bg-white/50 dark:bg-slate-950/40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <div class="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
+        <p class="text-sm text-slate-600 dark:text-slate-300">© <span id="year"></span> MINH NGỌC. All rights reserved.</p>
+        <div class="flex items-center gap-3 text-sm">
+          <a class="hover:underline" href="#home">Lên đầu trang</a>
+          <span class="text-slate-400">•</span>
+          <a class="hover:underline" href="#projects">Dự án</a>
+          <span class="text-slate-400">•</span>
+          <a class="hover:underline" href="#contact">Liên hệ</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[min(92vw,520px)]">
+    <div id="toast" class="toast rounded-2xl border border-slate-200 dark:border-white/10 bg-white/90 dark:bg-slate-900/80 backdrop-blur px-4 py-3 shadow-lg">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p id="toastTitle" class="font-semibold">Thông báo</p>
+          <p id="toastMsg" class="text-sm text-slate-600 dark:text-slate-300">...</p>
+        </div>
+        <button id="toastClose" class="focus-ring h-9 w-9 rounded-xl border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-950/30 hover:bg-white dark:hover:bg-slate-900" aria-label="Đóng thông báo" type="button">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Theme ----------
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('themeBtn');
+    const themeIcon = document.getElementById('themeIcon');
+
+    function getPreferredTheme() {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light' || saved === 'dark') return saved;
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function applyTheme(theme) {
+      const isDark = theme === 'dark';
+      root.classList.toggle('dark', isDark);
+      themeIcon.textContent = isDark ? '☾' : '☼';
+      localStorage.setItem('theme', theme);
+    }
+
+    applyTheme(getPreferredTheme());
+
+    themeBtn.addEventListener('click', () => {
+      applyTheme(root.classList.contains('dark') ? 'light' : 'dark');
+      toast('Đã đổi giao diện', root.classList.contains('dark') ? 'Đang dùng Dark mode.' : 'Đang dùng Light mode.');
+    });
+
+    // ---------- Mobile nav ----------
+    const mobileBtn = document.getElementById('mobileBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    mobileBtn.addEventListener('click', () => mobileNav.classList.toggle('hidden'));
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileNav.classList.add('hidden')));
+
+    // ---------- Progress bar ----------
+    const progress = document.getElementById('progress');
+    function updateProgress() {
+      const doc = document.documentElement;
+      const scrollTop = doc.scrollTop || document.body.scrollTop;
+      const scrollHeight = doc.scrollHeight - doc.clientHeight;
+      const ratio = scrollHeight > 0 ? (scrollTop / scrollHeight) : 0;
+      progress.style.width = (ratio * 100).toFixed(2) + '%';
+    }
+    document.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // ---------- Reveal on scroll ----------
+    const observer = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) e.target.classList.add('is-visible');
+      }
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ---------- Skills ----------
+    const skills = [
+      { name: 'UI/UX Design (Figma)', value: 85 },
+      { name: 'HTML/CSS (Responsive)', value: 90 },
+      { name: 'TailwindCSS', value: 88 },
+      { name: 'JavaScript (Vanilla)', value: 78 },
+      { name: 'Performance & Accessibility', value: 72 },
+    ];
+
+    const skillBars = document.getElementById('skillBars');
+    skillBars.innerHTML = skills.map(s => `
+      <div>
+        <div class="flex items-center justify-between gap-3">
+          <p class="font-medium">${escapeHtml(s.name)}</p>
+          <p class="text-sm text-slate-600 dark:text-slate-300">${s.value}%</p>
+        </div>
+        <div class="mt-2 h-3 rounded-full bg-slate-900/10 dark:bg-white/10 overflow-hidden border border-slate-200/60 dark:border-white/10">
+          <div class="h-full rounded-full bg-gradient-to-r from-blue-500 via-fuchsia-500 to-emerald-400" style="width:${s.value}%"></div>
+        </div>
+      </div>
+    `).join('');
+
+    // ---------- Projects ----------
+    const projects = [
+      {
+        title: 'Landing Page — Sản phẩm số',
+        desc: 'Thiết kế UI + build responsive, tối ưu CTA và tốc độ tải.',
+        tags: ['web', 'uiux'],
+        highlights: ['Responsive', 'CTA tối ưu', 'Clean UI'],
+        link: '#'
+      },
+      {
+        title: 'App Concept — Habit Tracker',
+        desc: 'Prototype UX flow, component system, dark mode.',
+        tags: ['uiux'],
+        highlights: ['Prototype', 'Design system', 'Dark mode'],
+        link: '#'
+      },
+      {
+        title: 'Brand mini — Cafe',
+        desc: 'Logo, palette, typography và guideline cơ bản.',
+        tags: ['brand'],
+        highlights: ['Logo', 'Typography', 'Guideline'],
+        link: '#'
+      },
+      {
+        title: 'Portfolio Template',
+        desc: 'Một template portfolio tối giản, dễ chỉnh sửa và deploy.',
+        tags: ['web'],
+        highlights: ['Single-page', 'SEO cơ bản', 'Fast'],
+        link: '#'
+      },
+      {
+        title: 'Dashboard UI',
+        desc: 'Thiết kế dashboard với grid, data card, trạng thái.',
+        tags: ['uiux', 'web'],
+        highlights: ['Data UI', 'Grid', 'States'],
+        link: '#'
+      },
+      {
+        title: 'Micro-interactions',
+        desc: 'Thử nghiệm motion nhẹ để tăng cảm giác phản hồi.',
+        tags: ['uiux'],
+        highlights: ['Motion', 'Feedback', 'Delight'],
+        link: '#'
+      }
+    ];
+
+    const projectGrid = document.getElementById('projectGrid');
+
+    function tagPill(tag) {
+      const map = {
+        web: 'from-blue-500/15 to-blue-500/5 text-blue-700 dark:text-blue-200 border-blue-500/20',
+        uiux: 'from-fuchsia-500/15 to-fuchsia-500/5 text-fuchsia-700 dark:text-fuchsia-200 border-fuchsia-500/20',
+        brand: 'from-emerald-500/15 to-emerald-500/5 text-emerald-700 dark:text-emerald-200 border-emerald-500/20'
+      };
+      const cls = map[tag] || 'from-slate-500/15 to-slate-500/5 text-slate-700 dark:text-slate-200 border-slate-500/20';
+      const label = tag === 'uiux' ? 'UI/UX' : tag.toUpperCase();
+      return `<span class="text-xs px-2.5 py-1 rounded-full bg-gradient-to-b ${cls} border">${label}</span>`;
+    }
+
+    function renderProjects(filter = 'all') {
+      const list = projects.filter(p => filter === 'all' ? true : p.tags.includes(filter));
+
+      if (list.length === 0) {
+        projectGrid.innerHTML = `
+          <div class="sm:col-span-2 lg:col-span-3 p-6 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-white/55 dark:bg-slate-900/25">
+            <p class="font-semibold">Không có dự án phù hợp.</p>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">Thử chọn bộ lọc khác.</p>
+          </div>
+        `;
+        return;
+      }
+
+      projectGrid.innerHTML = list.map(p => `
+        <article class="group p-6 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-white/55 dark:bg-slate-900/25 hover:bg-white/80 dark:hover:bg-slate-900/40 transition">
+          <div class="flex items-start justify-between gap-3">
+            <h3 class="font-semibold text-lg leading-snug">${escapeHtml(p.title)}</h3>
+            <span class="text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition" aria-hidden="true">↗</span>
+          </div>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(p.desc)}</p>
+          <div class="mt-4 flex flex-wrap gap-2">${p.tags.map(tagPill).join('')}</div>
+          <ul class="mt-4 grid gap-2 text-sm text-slate-600 dark:text-slate-300">
+            ${p.highlights.map(h => `<li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500"></span><span>${escapeHtml(h)}</span></li>`).join('')}
+          </ul>
+          <a href="${p.link}" class="mt-5 inline-flex items-center gap-2 text-sm font-medium hover:underline" aria-label="Mở dự án">Xem chi tiết <span aria-hidden="true">→</span></a>
+        </article>
+      `).join('');
+    }
+
+    renderProjects('all');
+
+    const filterBtns = document.querySelectorAll('.filterBtn');
+    function setActiveFilter(btn) {
+      filterBtns.forEach(b => {
+        b.classList.remove('bg-slate-900', 'text-white', 'dark:bg-white', 'dark:text-slate-900');
+      });
+      btn.classList.add('bg-slate-900', 'text-white', 'dark:bg-white', 'dark:text-slate-900');
+    }
+    setActiveFilter(document.querySelector('[data-filter="all"]'));
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const f = btn.getAttribute('data-filter');
+        renderProjects(f);
+        setActiveFilter(btn);
+      });
+    });
+
+    // ---------- Copy email ----------
+    const copyEmailBtn = document.getElementById('copyEmailBtn');
+    const emailText = document.getElementById('emailText');
+    copyEmailBtn.addEventListener('click', async () => {
+      const value = emailText.textContent.trim();
+      try {
+        await navigator.clipboard.writeText(value);
+        toast('Đã copy', `Email đã được copy: ${value}`);
+      } catch {
+        toast('Không copy được', 'Trình duyệt chặn clipboard. Bạn hãy copy thủ công.');
+      }
+    });
+
+    // ---------- Contact form ----------
+    const form = document.getElementById('contactForm');
+    const sendBtn = document.getElementById('sendBtn');
+
+    function showFieldError(id, show) {
+      const el = document.querySelector(`[data-err="${id}"]`);
+      if (!el) return;
+      el.classList.toggle('hidden', !show);
+    }
+
+    function validate() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const subject = document.getElementById('subject').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+      showFieldError('name', name.length === 0);
+      showFieldError('email', !emailOk);
+      showFieldError('subject', subject.length === 0);
+      showFieldError('message', message.length === 0);
+
+      return name.length > 0 && emailOk && subject.length > 0 && message.length > 0;
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!validate()) {
+        toast('Chưa gửi được', 'Vui lòng kiểm tra lại các trường bị báo lỗi.');
+        return;
+      }
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const subject = document.getElementById('subject').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      // Simulate sending
+      sendBtn.disabled = true;
+      const original = sendBtn.textContent;
+      sendBtn.textContent = 'Đang gửi…';
+
+      setTimeout(() => {
+        sendBtn.disabled = false;
+        sendBtn.textContent = original;
+
+        toast('Đã tạo email', 'Email draft đã được mở. Bạn chỉ cần bấm gửi.');
+
+        const to = emailText.textContent.trim();
+        const body = `Xin chào Minh Ngọc,%0D%0A%0D%0A${encodeURIComponent(message)}%0D%0A%0D%0A---%0D%0AFrom: ${encodeURIComponent(name)} (${encodeURIComponent(email)})`;
+        const url = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${body}`;
+        window.location.href = url;
+      }, 550);
+    });
+
+    // Live validation after first submit attempt
+    ['name','email','subject','message'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        // Only hide errors when user starts fixing
+        validate();
+      });
+    });
+
+    form.addEventListener('reset', () => {
+      ['name','email','subject','message'].forEach(id => showFieldError(id, false));
+    });
+
+    // ---------- Toast ----------
+    const toastEl = document.getElementById('toast');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMsg = document.getElementById('toastMsg');
+    const toastClose = document.getElementById('toastClose');
+    let toastTimer = null;
+
+    function toast(title, msg) {
+      toastTitle.textContent = title;
+      toastMsg.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3500);
+    }
+
+    toastClose.addEventListener('click', () => toastEl.classList.remove('show'));
+
+    // ---------- Utilities ----------
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    // ---------- Footer year ----------
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Keyboard: close toast with Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') toastEl.classList.remove('show');
+    });
+  </script>
+</body>
+</html>
